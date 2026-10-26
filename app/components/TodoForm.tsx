@@ -1,45 +1,37 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Input } from '@/app/components/ui/input';
-import { Button } from '@/app/components/ui/button';
 
 type TodoFormProps = {
   onAddTodo: (title: string) => void;
 };
 
 export default function TodoForm({ onAddTodo }: TodoFormProps) {
-  const [title, setTitle] = useState('');
+  const [task, setTask] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const trimmedTitle = title.trim();
-    if (!trimmedTitle) return;
+    e.preventDefault(); // Mencegah reload halaman
+    if (!task.trim()) return;
 
-    onAddTodo(trimmedTitle);
-    setTitle('');
+    onAddTodo(task.trim());
+    setTask(''); // Reset input setelah dikirim
   };
 
   return (
-    <div className="mb-6 bg-white p-4 rounded-xl border border-gray-70">
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <Input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Tambahkan tugas baru..."
-          className="flex-1 bg-white"
-          variantSize="md"
-        />
-        <Button
-          type="submit"
-          disabled={!title.trim()}
-          variant="default"
-          size="md"
-        >
-          Tambah
-        </Button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="flex items-center gap-3">
+      <input
+        type="text"
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        placeholder="Tambahkan tugas baru..."
+        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800"
+      />
+      <button
+        type="submit"
+        className="px-5 py-3 bg-blue-400 hover:bg-blue-500 text-white font-medium rounded-lg transition cursor-pointer"
+      >
+        Tambah
+      </button>
+    </form>
   );
 }
